@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+	--primary-color: #3b82f6;
+	--primary-hover-color: #2563eb;
+	--success-color: #10b981;
+	--success-hover-color: #059669;
+	--warning-color: #f59e0b;
+	--warning-hover-color: #d97706;
+	--secondary-color: #6b7280;
+	--secondary-hover-color: #4b5563;
+	--background-color: #f3f4f6;
+	--surface-color: #ffffff;
+	--border-color: #e5e7eb;
+	--text-primary: #1f2937;
+	--text-secondary: #6b7280;
+	--text-light: #ffffff;
+
+	/* Maze colors */
+	--wall-color: #1a202c; /* Darkest Blue-Gray */
+	--path-color: #ffffff; /* White */
+	--grid-line-color: #4a5568; /* Medium Blue-Gray */
+	--start-color: #10b981; /* Green */
+	--end-color: #ef4444; /* Red */
+	--current-color: #60a5fa; /* Lighter Blue */
+	--solution-color: #f59e0b; /* Amber */
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		sans-serif;
+	background-color: var(--background-color);
+	color: var(--text-primary);
+	line-height: 1.5;
+}
+
+#root {
+	min-height: 100vh;
+}

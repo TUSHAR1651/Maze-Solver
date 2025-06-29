@@ -1,0 +1,379 @@
+// Variables
+$primary-color: #3b82f6;
+$success-color: #10b981;
+$warning-color: #f59e0b;
+$secondary-color: #6b7280;
+$danger-color: #ef4444;
+$background-color: #f8fafc;
+$surface-color: #ffffff;
+$border-color: #e5e7eb;
+$text-primary: #1f2937;
+$text-secondary: #6b7280;
+
+// Colors for maze elements
+$wall-color: #1f2937;
+$path-color: #f8fafc;
+$start-color: #10b981;
+$end-color: #ef4444;
+$visited-color: #dbeafe;
+$solution-color: #fbbf24;
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		sans-serif;
+	background-color: $background-color;
+	color: $text-primary;
+	line-height: 1.6;
+}
+
+.container {
+	max-width: 1400px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.header {
+	text-align: center;
+	margin-bottom: 30px;
+
+	h1 {
+		font-size: 2.5rem;
+		font-weight: 700;
+		color: $primary-color;
+		margin-bottom: 8px;
+	}
+
+	p {
+		font-size: 1.1rem;
+		color: $text-secondary;
+	}
+}
+
+.controls {
+	display: flex;
+	justify-content: center;
+	gap: 30px;
+	margin-bottom: 30px;
+	flex-wrap: wrap;
+
+	.control-group {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+
+		label {
+			font-weight: 500;
+			color: $text-primary;
+			font-size: 0.9rem;
+		}
+
+		select {
+			padding: 8px 12px;
+			border: 2px solid $border-color;
+			border-radius: 8px;
+			background-color: $surface-color;
+			font-size: 0.9rem;
+			transition: border-color 0.2s ease;
+
+			&:focus {
+				outline: none;
+				border-color: $primary-color;
+			}
+		}
+	}
+}
+
+.main-content {
+	display: grid;
+	grid-template-columns: 1fr 350px;
+	gap: 30px;
+	align-items: start;
+
+	@media (max-width: 1200px) {
+		grid-template-columns: 1fr;
+		gap: 20px;
+	}
+}
+
+.maze-container {
+	position: relative;
+	background-color: $surface-color;
+	border-radius: 12px;
+	padding: 20px;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+	canvas {
+		display: block;
+		border: 2px solid $border-color;
+		border-radius: 8px;
+		cursor: crosshair;
+
+		&:hover {
+			border-color: $primary-color;
+		}
+	}
+}
+
+.maze-overlay {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+
+	.legend {
+		background-color: rgba(255, 255, 255, 0.95);
+		border-radius: 8px;
+		padding: 12px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+		.legend-item {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			margin-bottom: 6px;
+			font-size: 0.8rem;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+
+			.legend-color {
+				width: 16px;
+				height: 16px;
+				border-radius: 2px;
+				border: 1px solid rgba(0, 0, 0, 0.1);
+
+				&.wall {
+					background-color: $wall-color;
+				}
+				&.path {
+					background-color: $path-color;
+				}
+				&.start {
+					background-color: $start-color;
+				}
+				&.end {
+					background-color: $end-color;
+				}
+				&.visited {
+					background-color: $visited-color;
+				}
+				&.solution {
+					background-color: $solution-color;
+				}
+			}
+		}
+	}
+}
+
+.sidebar {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+
+	> div {
+		background-color: $surface-color;
+		border-radius: 12px;
+		padding: 20px;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+	}
+
+	h3 {
+		font-size: 1.1rem;
+		font-weight: 600;
+		margin-bottom: 15px;
+		color: $text-primary;
+	}
+}
+
+.mode-selector {
+	.mode-buttons {
+		display: flex;
+		gap: 8px;
+
+		.mode-btn {
+			flex: 1;
+			padding: 10px 16px;
+			border: 2px solid $border-color;
+			background-color: $surface-color;
+			border-radius: 8px;
+			font-weight: 500;
+			cursor: pointer;
+			transition: all 0.2s ease;
+
+			&:hover {
+				border-color: $primary-color;
+				background-color: rgba($primary-color, 0.05);
+			}
+
+			&.active {
+				background-color: $primary-color;
+				color: white;
+				border-color: $primary-color;
+			}
+		}
+	}
+}
+
+.action-buttons {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+
+	.btn {
+		padding: 12px 20px;
+		border: none;
+		border-radius: 8px;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		font-size: 0.9rem;
+
+		&:hover {
+			transform: translateY(-1px);
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+		}
+
+		&:active {
+			transform: translateY(0);
+		}
+
+		&.btn-primary {
+			background-color: $primary-color;
+			color: white;
+
+			&:hover {
+				background-color: darken($primary-color, 10%);
+			}
+		}
+
+		&.btn-success {
+			background-color: $success-color;
+			color: white;
+
+			&:hover {
+				background-color: darken($success-color, 10%);
+			}
+		}
+
+		&.btn-warning {
+			background-color: $warning-color;
+			color: white;
+
+			&:hover {
+				background-color: darken($warning-color, 10%);
+			}
+		}
+
+		&.btn-secondary {
+			background-color: $secondary-color;
+			color: white;
+
+			&:hover {
+				background-color: darken($secondary-color, 10%);
+			}
+		}
+
+		&:disabled {
+			opacity: 0.6;
+			cursor: not-allowed;
+			transform: none;
+
+			&:hover {
+				transform: none;
+				box-shadow: none;
+			}
+		}
+	}
+}
+
+.stats {
+	.stat-item {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 8px 0;
+		border-bottom: 1px solid $border-color;
+
+		&:last-child {
+			border-bottom: none;
+		}
+
+		.stat-label {
+			font-size: 0.9rem;
+			color: $text-secondary;
+		}
+
+		.stat-value {
+			font-weight: 600;
+			color: $text-primary;
+		}
+	}
+}
+
+.instructions {
+	ul {
+		list-style: none;
+		padding-left: 0;
+
+		li {
+			padding: 4px 0;
+			font-size: 0.9rem;
+			color: $text-secondary;
+			position: relative;
+			padding-left: 16px;
+
+			&:before {
+				content: "•";
+				color: $primary-color;
+				font-weight: bold;
+				position: absolute;
+				left: 0;
+			}
+		}
+	}
+
+	p {
+		margin-bottom: 12px;
+		font-size: 0.9rem;
+	}
+}
+
+// Responsive design
+@media (max-width: 768px) {
+	.container {
+		padding: 15px;
+	}
+
+	.header h1 {
+		font-size: 2rem;
+	}
+
+	.controls {
+		flex-direction: column;
+		align-items: center;
+		gap: 20px;
+	}
+
+	.maze-container {
+		padding: 15px;
+
+		canvas {
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	.sidebar {
+		gap: 15px;
+
+		> div {
+			padding: 15px;
+		}
+	}
+}
